@@ -89,7 +89,7 @@ export const dashbooardItems: DashboardButton[] = [
   {
     isActive: true,
     name: 'Dashboard',
-    icon: 'IconSearch',
+    icon: 'IconDash',
     isTransparent: false,
   },
   {

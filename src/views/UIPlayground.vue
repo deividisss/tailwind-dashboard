@@ -19,6 +19,7 @@ import AppButton from '@/components/AppButton.vue'
 import AppSidebar from '@/components/AppSidebar.vue'
 import type { DashboardButton } from '@/types/types'
 import AppSpinner from '@/components/AppSpinner.vue'
+import IconDash from '@/components/icons/IconDash.vue'
 
 function handleSidebarItemClick(item: DashboardButton) {
   console.log('Sidebar item clicked:', item)
@@ -32,6 +33,7 @@ function handleSidebarItemClick(item: DashboardButton) {
     <section class="flex items-center gap-4">
       <IconNotificationBing />
       <IconSearch />
+      <IconDash />
     </section>
 
     <section class="flex gap-3">
