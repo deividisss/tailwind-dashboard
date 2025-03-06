@@ -1,5 +1,12 @@
 <script lang="ts" setup>
-import { headers, headersMobileCheck, rows, rowsMobileCheck } from '@/data/mockData'
+import {
+  dashBoardHelpButton,
+  dashbooardItems,
+  headers,
+  headersMobileCheck,
+  rows,
+  rowsMobileCheck,
+} from '@/data/mockData'
 import UserAvatarButton from '@/components/UserAvatarButton.vue'
 import NotficationBell from '../components/NotificationBell.vue'
 import SearchInput from '@/components/SearchInput.vue'
@@ -8,6 +15,14 @@ import IconNotificationBing from '@/components/icons/IconNotificationBing.vue'
 import IconSearch from '@/components/icons/IconSearch.vue'
 import AppTextInput from './AppTextInput.vue'
 import AppTable from '@/components/AppTable.vue'
+import AppButton from '@/components/AppButton.vue'
+import AppSidebar from '@/components/AppSidebar.vue'
+import type { DashboardButton } from '@/types/types'
+import AppSpinner from '@/components/AppSpinner.vue'
+
+function handleSidebarItemClick(item: DashboardButton) {
+  console.log('Sidebar item clicked:', item)
+}
 </script>
 
 <template>
@@ -19,9 +34,28 @@ import AppTable from '@/components/AppTable.vue'
       <IconSearch />
     </section>
 
-    <section>
+    <section class="flex gap-3">
       <NotficationBell />
       <NotficationBell hasNotification />
+    </section>
+
+    <section class="grid gap-4">
+      <AppButton><IconSearch /> Clicks</AppButton>
+      <AppButton
+        ><IconSearch /> Click me Click meClick meClick meClick meClick meClick meClick me</AppButton
+      >
+      <AppButton isActive><IconSearch /> Click me</AppButton>
+      <AppButton isActive is-transparent><IconSearch /> Click me</AppButton>
+      <AppButton isFullWidth><IconSearch /> Click me</AppButton>
+      <AppButton isFullWidth isActive><IconSearch /> Click me</AppButton>
+      <AppButton isFullWidth isActive is-transparent><IconSearch /> Click me</AppButton>
+      <AppButton isFullWidth is-transparent
+        ><IconSearch /> Click me Click meClick meClick meClick meClick meClick meClick me</AppButton
+      >
+    </section>
+
+    <section>
+      <AppSpinner />
     </section>
 
     <section><SearchInput placeholder="Search for something..." /></section>
@@ -48,6 +82,15 @@ import AppTable from '@/components/AppTable.vue'
         :rows="rowsMobileCheck"
         isSelectable
         hasBorderBottom
+      />
+    </section>
+
+    <section>
+      <AppSidebar
+        title="Sales."
+        :dashbooardItems="dashbooardItems"
+        :helpButton="dashBoardHelpButton"
+        @itemClick="handleSidebarItemClick"
       />
     </section>
   </main>

@@ -8,7 +8,7 @@ export interface LinkableText {
   }
 }
 export type RowData = {
-  [key: string]: string | boolean | LinkableText
+  [key: string]: string | boolean | number | LinkableText
 }
 
 export interface Header {
@@ -24,4 +24,22 @@ export interface TableData {
   rows: RowData[]
   isSelectable?: boolean
   hasBorderBottom?: boolean
+}
+
+export interface DashboardButton {
+  isTransparent: boolean | undefined
+  isActive?: boolean
+  name: string
+  icon: string
+  isFullWidth?: boolean
+}
+
+export interface Product {
+  id: string
+  title: string
+  category: string
+  brand: string
+  price: number
+  stock: number
+  rating: number
 }

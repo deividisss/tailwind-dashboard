@@ -1,4 +1,5 @@
-import { LINK_TYPES } from "@/constants"
+import { LINK_TYPES } from '@/constants'
+import type { DashboardButton } from '@/types/types'
 
 export const headers = [
   { key: 'title', label: 'Title', sortable: true, isVisibleOnMobile: true },
@@ -83,3 +84,55 @@ export const rowsMobileCheck = [
     isActive: false,
   },
 ]
+
+export const dashbooardItems: DashboardButton[] = [
+  {
+    isActive: true,
+    name: 'Dashboard',
+    icon: 'IconSearch',
+    isTransparent: false,
+  },
+  {
+    isActive: false,
+    name: 'Lab Test',
+    icon: 'IconSearch',
+    isTransparent: true,
+  },
+  {
+    isActive: false,
+    name: 'Appontment',
+    icon: 'IconSearch',
+    isTransparent: true,
+  },
+  {
+    isActive: false,
+    name: 'Medicine order',
+    icon: 'IconSearch',
+    isTransparent: true,
+  },
+  {
+    isActive: false,
+    name: 'Message',
+    icon: 'IconSearch',
+    isTransparent: true,
+  },
+  {
+    isActive: false,
+    name: 'Payment',
+    icon: 'IconSearch',
+    isTransparent: true,
+  },
+  {
+    isActive: false,
+    name: 'Settings',
+    icon: 'IconSearch',
+    isTransparent: true,
+  },
+]
+
+export const dashBoardHelpButton: DashboardButton = {
+  isActive: false,
+  name: 'Help',
+  icon: 'IconSearch',
+  isTransparent: true,
+}

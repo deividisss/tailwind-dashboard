@@ -1,7 +1,7 @@
 <template>
   <component
     :is="type === 'header' ? 'th' : 'td'"
-    class="px-4 py-2 text-left"
+    class="px-4 py-4 text-left"
     :class="{ 'font-bold': type === 'header', 'flex items-center justify-center': center }"
   >
     <slot />
