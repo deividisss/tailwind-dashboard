@@ -10,6 +10,7 @@ export function useFetchProducts(limit = 10) {
   const isLoading = ref(false)
   const error = ref<string | null>(null)
 
+  // Fetch all products
   const fetchProducts = async () => {
     isLoading.value = true
     error.value = null
@@ -53,6 +54,41 @@ export function useFetchProducts(limit = 10) {
     }
   }
 
+  const searchProducts = async (query: string) => {
+    isLoading.value = true
+    error.value = null
+    try {
+      const url = `https://dummyjson.com/products/search?q=${query}&select=${fields}`
+      const response = await fetch(url)
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`)
+      }
+
+      const data = await response.json()
+      tableRows.value = data.products.map((product: Product) => ({
+        title: {
+          text: product.title,
+          link: { type: LINK_TYPES.ROUTER, value: `/product/${product.id}` },
+        },
+        category: product.category,
+        brand: product.brand,
+        price: product.price,
+        stock: product.stock,
+        rating: product.rating,
+      }))
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        error.value = `Error searching products: ${err.message}`
+      } else {
+        error.value = 'An unknown error occurred'
+      }
+      console.error('Error searching products:', err)
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   const fetchProduct = async (id: string) => {
     isLoading.value = true
     error.value = null
@@ -80,5 +116,13 @@ export function useFetchProducts(limit = 10) {
 
   onMounted(fetchProducts)
 
-  return { tableRows, tableHeader, isLoading, error, fetchProducts, fetchProduct }
+  return {
+    tableRows,
+    tableHeader,
+    isLoading,
+    error,
+    fetchProducts,
+    searchProducts,
+    fetchProduct,
+  }
 }

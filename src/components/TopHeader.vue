@@ -7,7 +7,9 @@ import NotificationBell from '@/components/NotificationBell.vue'
 <template>
   <header class="flex items-center justify-between gap-5">
     <slot />
-    <SearchInput placeholder="Search for something..." />
+    <div class="w-[655px]">
+      <SearchInput placeholder="Search for something..." />
+    </div>
 
     <div class="flex items-center gap-4">
       <NotificationBell hasNotification />
