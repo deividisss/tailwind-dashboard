@@ -10,7 +10,7 @@ import AppTable from '@/components/AppTable.vue'
 
 // Headers configuration
 const headers = [
-  { key: 'title', label: 'Title', sortable: true },
+  { key: 'title', label: 'Title', sortable: true, isVisibleOnMobile: true },
   { key: 'category', label: 'Category', sortable: true },
   { key: 'brand', label: 'Brand', sortable: true },
   { key: 'price', label: 'Price', sortable: true },
@@ -18,8 +18,46 @@ const headers = [
   { key: 'rating', label: 'Rating', sortable: false },
 ]
 
-// Table data
+const headersMobileCheck = [
+  { key: 'title', label: 'Title', sortable: true, isVisibleOnMobile: true },
+  { key: 'category', label: 'Category', sortable: false, isVisibleOnMobile: true },
+  { key: 'brand', label: 'Brand', sortable: false },
+  { key: 'price', label: 'Price', sortable: false },
+  { key: 'stock', label: 'Stock', sortable: false },
+  { key: 'rating', label: 'Rating', sortable: false },
+]
+
 const rows = [
+  {
+    title: 'Product 1',
+    category: 'Electronics',
+    brand: 'Brand A',
+    price: '$100',
+    stock: '20',
+    rating: '4',
+    isActive: false,
+  },
+  {
+    title: 'Product 2',
+    category: 'Clothing',
+    brand: 'Brand B',
+    price: '$50',
+    stock: '50',
+    rating: '5',
+    isActive: true,
+  },
+  {
+    title: 'Product 3',
+    category: 'Books',
+    brand: 'Brand C',
+    price: '$10',
+    stock: '100',
+    rating: '3',
+    isActive: false,
+  },
+]
+
+const rowsMobileCheck = [
   {
     title: 'Product 1',
     category: 'Electronics',
@@ -59,7 +97,10 @@ const rows = [
       <IconSearch />
     </section>
 
-    <section><NotficationBell /> <NotficationBell hasNotification /></section>
+    <section>
+      <NotficationBell />
+      <NotficationBell hasNotification />
+    </section>
 
     <section><SearchInput placeholder="Search for something..." /></section>
 
@@ -79,6 +120,15 @@ const rows = [
 
     <section>
       <AppTable :headers="headers" :rows="rows" />
+    </section>
+
+    <section>
+      <AppTable
+        :headers="headersMobileCheck"
+        :rows="rowsMobileCheck"
+        isSelectable
+        hasBorderBottom
+      />
     </section>
   </main>
 </template>

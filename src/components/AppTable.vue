@@ -1,27 +1,29 @@
 <template>
   <table class="w-full bg-white">
     <thead>
-      <AppTableRow>
-        <!-- Checkbox column -->
-        <AppTableCell type="header" class="w-4">
+      <AppTableRow :has-border-bottom="hasBorderBottom">
+        <AppTableCell v-if="isSelectable" type="header" class="w-4">
           <input type="checkbox" class="w-4" v-model="isAllChecked" @change="toggleSelectAll" />
         </AppTableCell>
-        <!-- Dynamic headers -->
-        <AppTableCell v-for="header in headers" :key="header.key" type="header">
-          <!-- Use a button for sortable headers -->
+
+        <AppTableCell
+          v-for="header in headers"
+          :key="header.key"
+          type="header"
+          :class="{ 'hidden md:table-cell': !header.isVisibleOnMobile }"
+        >
           <button
             v-if="header.sortable"
             @click="sortBy(header.key)"
             class="focus:ring-black-500 flex items-center gap-1 focus:ring-2 focus:ring-offset-2 focus:outline-none"
           >
             <span>{{ header.label }}</span>
-            <!-- Sort icon -->
             <span class="w-4">
               <span v-if="sortKey === header.key && sortDirection === 'asc'">↑</span>
               <span v-else-if="sortKey === header.key && sortDirection === 'desc'">↓</span>
             </span>
           </button>
-          <!-- Non-sortable headers -->
+
           <span v-else>
             {{ header.label }}
           </span>
@@ -29,11 +31,21 @@
       </AppTableRow>
     </thead>
     <tbody>
-      <AppTableRow v-for="(row, index) in rows" :key="index" :is-active="!!row.isActive">
-        <AppTableCell class="w-6">
+      <AppTableRow
+        v-for="(row, index) in rows"
+        :key="index"
+        :is-active="isSelectable && !!row.isActive"
+        :has-border-bottom="hasBorderBottom"
+      >
+        <AppTableCell v-if="isSelectable" class="w-6">
           <input type="checkbox" class="w-4" v-model="row.isActive" />
         </AppTableCell>
-        <AppTableCell v-for="header in headers" :key="header.key">
+
+        <AppTableCell
+          v-for="header in headers"
+          :key="header.key"
+          :class="{ 'hidden md:table-cell': !header.isVisibleOnMobile }"
+        >
           {{ row[header.key] }}
         </AppTableCell>
       </AppTableRow>
@@ -48,12 +60,25 @@ import AppTableCell from '@/components/AppTableCell.vue'
 
 const props = defineProps({
   headers: {
-    type: Array as () => { key: string; label: string; sortable?: boolean }[],
+    type: Array as () => {
+      key: string
+      label: string
+      sortable?: boolean
+      isVisibleOnMobile?: boolean
+    }[],
     required: true,
   },
   rows: {
     type: Array as () => { [key: string]: string | number | boolean }[],
     required: true,
+  },
+  isSelectable: {
+    type: Boolean,
+    default: false,
+  },
+  hasBorderBottom: {
+    type: Boolean,
+    default: false,
   },
 })
 
@@ -66,7 +91,6 @@ function toggleSelectAll() {
   })
 }
 
-// Sorting logic
 const sortKey = ref<string | null>(null)
 const sortDirection = ref<'asc' | 'desc' | null>(null)
 

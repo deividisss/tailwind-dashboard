@@ -4,13 +4,21 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  hasBorderBottom: {
+    type: Boolean,
+    default: true,
+  },
 })
 </script>
 
 <template>
   <tr
-    class="border-b border-gray-200 transition-colors duration-200"
-    :class="{ 'bg-gray-100': isActive, 'bg-white': !isActive }"
+    class="transition-colors duration-200"
+    :class="{
+      'bg-gray-100': isActive,
+      'bg-white': !isActive,
+      'border-b border-gray-200': hasBorderBottom,
+    }"
   >
     <slot />
   </tr>
