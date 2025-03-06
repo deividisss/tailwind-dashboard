@@ -3,7 +3,13 @@
     <thead>
       <AppTableRow :has-border-bottom="hasBorderBottom">
         <AppTableCell v-if="isSelectable" type="header" class="w-4">
-          <input type="checkbox" class="w-4" v-model="isAllChecked" @change="toggleSelectAll" />
+          <input
+            type="checkbox"
+            class="w-4"
+            v-model="isAllChecked"
+            @change="toggleSelectAll"
+            :aria-label="`Select all rows`"
+          />
         </AppTableCell>
 
         <AppTableCell
@@ -16,11 +22,13 @@
             v-if="header.sortable"
             @click="sortBy(header.key)"
             class="focus:ring-black-500 flex items-center gap-1 focus:ring-2 focus:ring-offset-2 focus:outline-none"
+            :aria-label="`Sort by ${header.label}`"
           >
             <span>{{ header.label }}</span>
             <span class="w-4">
               <span v-if="sortKey === header.key && sortDirection === 'asc'">↑</span>
               <span v-else-if="sortKey === header.key && sortDirection === 'desc'">↓</span>
+              <span v-else-if="header.sortable">↕</span>
             </span>
           </button>
 
@@ -38,7 +46,12 @@
         :has-border-bottom="hasBorderBottom"
       >
         <AppTableCell v-if="isSelectable" class="w-6">
-          <input type="checkbox" class="w-4" v-model="row.isActive" />
+          <input
+            type="checkbox"
+            class="w-4"
+            v-model="row.isActive"
+            :aria-label="`Select row ${index + 1}`"
+          />
         </AppTableCell>
 
         <AppTableCell
@@ -46,7 +59,23 @@
           :key="header.key"
           :class="{ 'hidden md:table-cell': !header.isVisibleOnMobile }"
         >
-          {{ row[header.key] }}
+          <template v-if="header.isLink">
+            <AppLink
+              v-if="isLinkable(row[header.key])"
+              :text="(row[header.key] as LinkableText).text"
+              :link="{
+                type: (row[header.key] as LinkableText).link.type,
+                value: (row[header.key] as LinkableText).link.value,
+              }"
+            />
+            <template v-else>
+              {{ row[header.key] }}
+            </template>
+          </template>
+
+          <template v-else>
+            {{ row[header.key] }}
+          </template>
         </AppTableCell>
       </AppTableRow>
     </tbody>
@@ -57,30 +86,15 @@
 import { ref } from 'vue'
 import AppTableRow from '@/components/AppTableRow.vue'
 import AppTableCell from '@/components/AppTableCell.vue'
+import AppLink from '@/components/AppLink.vue'
+import type { Header, RowData, LinkableText } from '@/types/types'
 
-const props = defineProps({
-  headers: {
-    type: Array as () => {
-      key: string
-      label: string
-      sortable?: boolean
-      isVisibleOnMobile?: boolean
-    }[],
-    required: true,
-  },
-  rows: {
-    type: Array as () => { [key: string]: string | number | boolean }[],
-    required: true,
-  },
-  isSelectable: {
-    type: Boolean,
-    default: false,
-  },
-  hasBorderBottom: {
-    type: Boolean,
-    default: false,
-  },
-})
+const props = defineProps<{
+  headers: Header[]
+  rows: RowData[]
+  isSelectable?: boolean
+  hasBorderBottom?: boolean
+}>()
 
 const rows = ref(props.rows)
 const isAllChecked = ref(false)
@@ -103,9 +117,16 @@ function sortBy(key: string) {
   }
 
   rows.value.sort((a, b) => {
-    if (a[key] < b[key]) return sortDirection.value === 'asc' ? -1 : 1
-    if (a[key] > b[key]) return sortDirection.value === 'asc' ? 1 : -1
+    const aValue = isLinkable(a[key]) ? (a[key] as LinkableText).text : a[key]
+    const bValue = isLinkable(b[key]) ? (b[key] as LinkableText).text : b[key]
+
+    if (aValue < bValue) return sortDirection.value === 'asc' ? -1 : 1
+    if (aValue > bValue) return sortDirection.value === 'asc' ? 1 : -1
     return 0
   })
+}
+
+function isLinkable(value: unknown): value is LinkableText {
+  return typeof value === 'object' && value !== null && 'link' in value && 'text' in value
 }
 </script>

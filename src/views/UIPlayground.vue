@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { headers, headersMobileCheck, rows, rowsMobileCheck } from '@/data/mockData'
 import UserAvatarButton from '@/components/UserAvatarButton.vue'
 import NotficationBell from '../components/NotificationBell.vue'
 import SearchInput from '@/components/SearchInput.vue'
@@ -7,85 +8,6 @@ import IconNotificationBing from '@/components/icons/IconNotificationBing.vue'
 import IconSearch from '@/components/icons/IconSearch.vue'
 import AppTextInput from './AppTextInput.vue'
 import AppTable from '@/components/AppTable.vue'
-
-// Headers configuration
-const headers = [
-  { key: 'title', label: 'Title', sortable: true, isVisibleOnMobile: true },
-  { key: 'category', label: 'Category', sortable: true },
-  { key: 'brand', label: 'Brand', sortable: true },
-  { key: 'price', label: 'Price', sortable: true },
-  { key: 'stock', label: 'Stock', sortable: false },
-  { key: 'rating', label: 'Rating', sortable: false },
-]
-
-const headersMobileCheck = [
-  { key: 'title', label: 'Title', sortable: true, isVisibleOnMobile: true },
-  { key: 'category', label: 'Category', sortable: false, isVisibleOnMobile: true },
-  { key: 'brand', label: 'Brand', sortable: false },
-  { key: 'price', label: 'Price', sortable: false },
-  { key: 'stock', label: 'Stock', sortable: false },
-  { key: 'rating', label: 'Rating', sortable: false },
-]
-
-const rows = [
-  {
-    title: 'Product 1',
-    category: 'Electronics',
-    brand: 'Brand A',
-    price: '$100',
-    stock: '20',
-    rating: '4',
-    isActive: false,
-  },
-  {
-    title: 'Product 2',
-    category: 'Clothing',
-    brand: 'Brand B',
-    price: '$50',
-    stock: '50',
-    rating: '5',
-    isActive: true,
-  },
-  {
-    title: 'Product 3',
-    category: 'Books',
-    brand: 'Brand C',
-    price: '$10',
-    stock: '100',
-    rating: '3',
-    isActive: false,
-  },
-]
-
-const rowsMobileCheck = [
-  {
-    title: 'Product 1',
-    category: 'Electronics',
-    brand: 'Brand A',
-    price: '$100',
-    stock: '20',
-    rating: '4',
-    isActive: false,
-  },
-  {
-    title: 'Product 2',
-    category: 'Clothing',
-    brand: 'Brand B',
-    price: '$50',
-    stock: '50',
-    rating: '5',
-    isActive: true,
-  },
-  {
-    title: 'Product 3',
-    category: 'Books',
-    brand: 'Brand C',
-    price: '$10',
-    stock: '100',
-    rating: '3',
-    isActive: false,
-  },
-]
 </script>
 
 <template>
@@ -118,11 +40,9 @@ const rowsMobileCheck = [
       <AppTextInput placeholder="Enter your full name..." />
     </section>
 
-    <section>
-      <AppTable :headers="headers" :rows="rows" />
-    </section>
+    <section class="grid gap-5">
+      <AppTable :headers="headers" :rows="rows" class="mr-3" />
 
-    <section>
       <AppTable
         :headers="headersMobileCheck"
         :rows="rowsMobileCheck"
